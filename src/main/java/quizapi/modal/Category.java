@@ -23,8 +23,11 @@ public class Category {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(targetEntity = Question.class, mappedBy = "id", fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Question.class, mappedBy = "id")
     private Collection<Question> questions;
+
+    @OneToMany(targetEntity = Record.class, mappedBy = "id")
+    private Collection<Record> records;
 
     public Long getId() {
         return id;
