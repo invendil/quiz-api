@@ -26,7 +26,7 @@ public class Answer {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToOne(targetEntity = Question.class, mappedBy = "id")
+    @ManyToOne(targetEntity = Question.class)
     private Question question;
 
     public Long getId() {

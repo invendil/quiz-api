@@ -26,13 +26,13 @@ public class Question {
     @Column(name = "title", nullable = false, unique = true)
     private String title;
 
-    @OneToOne(targetEntity = Category.class, mappedBy = "category_id", optional = false)
+    @ManyToOne(targetEntity = Category.class, optional = false)
     private Category category;
 
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(targetEntity = Answer.class, mappedBy = "id", fetch = FetchType.EAGER)
+    @OneToMany(targetEntity = Answer.class, mappedBy = "id")
     private Collection<Answer> answers;
 
     public Long getId() {
