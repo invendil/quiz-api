@@ -2,9 +2,8 @@ package quizapi.repository;
 
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import quizapi.modal.Category;
-import quizapi.modal.GameSession;
-import quizapi.modal.User;
+import quizapi.model.GameSession;
+import quizapi.model.User;
 
 import java.util.Optional;
 

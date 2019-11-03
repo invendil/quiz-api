@@ -6,15 +6,23 @@ public class GameSessionPayload {
 
     private String username;
 
-    private int answer;
+    private long answerId;
 
     public GameSessionPayload() {
     }
 
-    public GameSessionPayload(String category, String username, int answer) {
+    public GameSessionPayload(String category, String username, int answerId) {
         this.category = category;
         this.username = username;
-        this.answer = answer;
+        this.answerId = answerId;
+    }
+
+    public long getAnswerId() {
+        return answerId;
+    }
+
+    public void setAnswerId(long answerId) {
+        this.answerId = answerId;
     }
 
     public String getCategory() {

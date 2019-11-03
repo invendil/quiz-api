@@ -3,7 +3,7 @@ package quizapi.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import quizapi.exception.ResourceNotFoundException;
-import quizapi.modal.User;
+import quizapi.model.User;
 import quizapi.repository.UserRepository;
 
 @Service

@@ -4,7 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import quizapi.modal.User;
+import quizapi.model.User;
 import quizapi.service.UserService;
 
 @RestController

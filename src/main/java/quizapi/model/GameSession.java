@@ -1,6 +1,7 @@
-package quizapi.modal;
+package quizapi.model;
 
 import javax.persistence.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "game_sessions")
@@ -9,8 +10,9 @@ public class GameSession {
     public GameSession() {
     }
 
-    public GameSession(Category category, User user, Integer questionsCountTotal, Integer questionsCountAnswered, Integer score) {
+    public GameSession(Category category, User user, Integer questionsCountTotal, Integer questionsCountAnswered, Integer score, Collection<Question> questions) {
         this.score = score;
+        this.questions = questions;
         this.category = category;
         this.user = user;
         this.questionsCountTotal = questionsCountTotal;
@@ -25,17 +27,32 @@ public class GameSession {
     @Column(name = "score", nullable = false)
     private Integer score;
 
+    @Column(name = "questions_count_total", nullable = false)
+    private Integer questionsCountTotal;
+
+    @Column(name = "questions_count_answered", nullable = false)
+    private Integer questionsCountAnswered;
+
     @ManyToOne(targetEntity = Category.class, optional = false)
     private Category category;
 
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
 
-    @Column(name = "questions_count_total", nullable = false)
-    private Integer questionsCountTotal;
+    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Question.class)
+    @JoinTable(name = "session_question",
+            joinColumns = @JoinColumn(name = "session_id"),
+            inverseJoinColumns = @JoinColumn(name = "question_id")
+    )
+    private Collection<Question> questions;
 
-    @Column(name = "questions_count_answered", nullable = false)
-    private Integer questionsCountAnswered;
+    public Collection<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(Collection<Question> questions) {
+        this.questions = questions;
+    }
 
     public Long getId() {
         return id;

@@ -3,13 +3,16 @@ package quizapi.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import quizapi.exception.ResourceNotFoundException;
-import quizapi.modal.Category;
-import quizapi.modal.GameSession;
-import quizapi.modal.User;
+import quizapi.model.Category;
+import quizapi.model.GameSession;
+import quizapi.model.Question;
+import quizapi.model.User;
 import quizapi.payload.GameSessionPayload;
 import quizapi.repository.CategoryRepository;
 import quizapi.repository.GameSessionRepository;
-import quizapi.repository.UserRepository;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class GameSessionService {
@@ -39,17 +42,19 @@ public class GameSessionService {
                 currentSessionUser,
                 currentSessionCategory.getQuestions().size(),
                 0,
-                0
+                0,
+                new ArrayList<Question>()
         );
         gameSessionRepository.save(gameSession);
         return currentSessionCategory;
     }
 
-    public Boolean giveAnswer(GameSessionPayload gameSessionPayload) {
+    public Boolean isAnswerRight(GameSessionPayload gameSessionPayload) {
         User currentSessionUser = userService.findOrCreateByUsername(gameSessionPayload.getUsername());
         GameSession currentGameSession = gameSessionRepository
                 .findByUser(currentSessionUser)
                 .orElseThrow(() -> new ResourceNotFoundException("GameSession", "user", currentSessionUser.getUsername()));
-        List<Qusy>
+        List<Question> currentSessionAnsweredQuestions = new ArrayList(currentGameSession.getQuestions());
+        Question currentSessionQuestion =
     }
 }

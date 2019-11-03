@@ -1,4 +1,4 @@
-package quizapi.modal;
+package quizapi.model;
 
 import javax.persistence.*;
 import java.util.Collection;
