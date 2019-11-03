@@ -2,22 +2,11 @@ package quizapi.model;
 
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "game_sessions")
 public class GameSession {
-
-    public GameSession() {
-    }
-
-    public GameSession(Category category, User user, Integer questionsCountTotal, Integer questionsCountAnswered, Integer score, Collection<Question> questions) {
-        this.score = score;
-        this.questions = questions;
-        this.category = category;
-        this.user = user;
-        this.questionsCountTotal = questionsCountTotal;
-        this.questionsCountAnswered = questionsCountAnswered;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,11 +28,22 @@ public class GameSession {
     @ManyToOne(targetEntity = User.class, optional = false)
     private User user;
 
-    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = Question.class)
-    @JoinTable(name = "session_question",
-            joinColumns = @JoinColumn(name = "session_id"),
-            inverseJoinColumns = @JoinColumn(name = "question_id")
-    )
+    @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = SessionAnswer.class)
+    private Set<SessionAnswer> sessionAnswers;
+
+    public GameSession() {
+    }
+
+    public GameSession(Integer score, Integer questionsCountTotal, Integer questionsCountAnswered,
+                       Category category, User user, Collection<Question> questions) {
+        this.score = score;
+        this.questionsCountTotal = questionsCountTotal;
+        this.questionsCountAnswered = questionsCountAnswered;
+        this.category = category;
+        this.user = user;
+        this.questions = questions;
+    }
+
     private Collection<Question> questions;
 
     public Collection<Question> getQuestions() {
@@ -56,10 +56,6 @@ public class GameSession {
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Integer getScore() {

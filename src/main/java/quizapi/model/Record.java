@@ -6,15 +6,6 @@ import javax.persistence.*;
 @Table(name = "records")
 public class Record {
 
-    public Record() {
-    }
-
-    public Record(Integer score, Category category, User user) {
-        this.score = score;
-        this.category = category;
-        this.user = user;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -28,6 +19,15 @@ public class Record {
 
     @ManyToOne(targetEntity = User.class)
     private User user;
+
+    public Record() {
+    }
+
+    public Record(Integer score, Category category, User user) {
+        this.score = score;
+        this.category = category;
+        this.user = user;
+    }
 
     public Long getId() {
         return id;

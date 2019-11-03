@@ -7,19 +7,6 @@ import java.util.Collection;
 @Table(name = "users")
 public class User {
 
-    public User() {
-    }
-
-    public User(String username) {
-        this.username = username;
-    }
-
-    public User(String username, Collection<Answer> answers, Collection<Record> records) {
-        this.username = username;
-        this.answers = answers;
-        this.records = records;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -33,6 +20,19 @@ public class User {
 
     @OneToMany(targetEntity = Record.class, mappedBy = "id")
     private Collection<Record> records;
+
+    public User() {
+    }
+
+    public User(String username) {
+        this.username = username;
+    }
+
+    public User(String username, Collection<Answer> answers, Collection<Record> records) {
+        this.username = username;
+        this.answers = answers;
+        this.records = records;
+    }
 
     public Long getId() {
         return id;

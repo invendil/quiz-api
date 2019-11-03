@@ -6,15 +6,6 @@ import java.util.Collection;
 @Entity
 @Table(name = "categories")
 public class Category {
-
-    public Category() {
-    }
-
-    public Category(String name, Collection<Question> questions) {
-        this.name = name;
-        this.questions = questions;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -28,6 +19,14 @@ public class Category {
 
     @OneToMany(targetEntity = Record.class, mappedBy = "id")
     private Collection<Record> records;
+
+    public Category() {
+    }
+
+    public Category(String name, Collection<Question> questions) {
+        this.name = name;
+        this.questions = questions;
+    }
 
     public Long getId() {
         return id;

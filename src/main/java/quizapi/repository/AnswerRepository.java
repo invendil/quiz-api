@@ -5,4 +5,6 @@ import org.springframework.stereotype.Repository;
 import quizapi.model.Answer;
 
 @Repository
-public interface AnswerRepository extends CrudRepository<Answer, Long> {}
+public interface AnswerRepository extends CrudRepository<Answer, Long> {
+
+}

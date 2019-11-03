@@ -8,16 +8,6 @@ import java.util.Collection;
 @Table(name = "questions")
 public class Question {
 
-    public Question() {
-    }
-
-    public Question(String title, Category category, String description, Collection<Answer> answers) {
-        this.title = title;
-        this.category = category;
-        this.description = description;
-        this.answers = answers;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -34,6 +24,16 @@ public class Question {
 
     @OneToMany(targetEntity = Answer.class, mappedBy = "id")
     private Collection<Answer> answers;
+
+    public Question() {
+    }
+
+    public Question(String title, Category category, String description, Collection<Answer> answers) {
+        this.title = title;
+        this.category = category;
+        this.description = description;
+        this.answers = answers;
+    }
 
     public Long getId() {
         return id;

@@ -6,15 +6,6 @@ import javax.persistence.*;
 @Table(name = "answers")
 public class Answer {
 
-    public Answer() {
-    }
-
-    public Answer(Boolean isRight, String description, Question question) {
-        this.isRight = isRight;
-        this.description = description;
-        this.question = question;
-    }
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, nullable = false)
@@ -28,6 +19,15 @@ public class Answer {
 
     @ManyToOne(targetEntity = Question.class)
     private Question question;
+
+    public Answer() {
+    }
+
+    public Answer(Boolean isRight, String description, Question question) {
+        this.isRight = isRight;
+        this.description = description;
+        this.question = question;
+    }
 
     public Long getId() {
         return id;
