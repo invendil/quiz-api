@@ -14,6 +14,9 @@ public class Record {
     @Column(name = "score", nullable = false)
     private Integer score;
 
+    @Column(name = "question_count", nullable = false)
+    private Integer questionCount;
+
     @ManyToOne(targetEntity = Category.class)
     private Category category;
 
@@ -23,8 +26,9 @@ public class Record {
     public Record() {
     }
 
-    public Record(Integer score, Category category, User user) {
+    public Record(Integer score,Integer questionCount, Category category, User user) {
         this.score = score;
+        this.questionCount = questionCount;
         this.category = category;
         this.user = user;
     }

@@ -97,4 +97,8 @@ public class GameSession {
     public void setQuestionsCountAnswered(Integer questionsCountAnswered) {
         this.questionsCountAnswered = questionsCountAnswered;
     }
+
+    public Set<SessionAnswer> getSessionAnswers() {
+        return sessionAnswers;
+    }
 }
