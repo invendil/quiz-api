@@ -10,8 +10,12 @@ public class User {
     public User() {
     }
 
-    public User(String nickname, Collection<Answer> answers, Collection<Record> records) {
-        this.nickname = nickname;
+    public User(String username) {
+        this.username = username;
+    }
+
+    public User(String username, Collection<Answer> answers, Collection<Record> records) {
+        this.username = username;
         this.answers = answers;
         this.records = records;
     }
@@ -21,8 +25,8 @@ public class User {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "nickname", nullable = false)
-    private String nickname;
+    @Column(name = "username", nullable = false)
+    private String username;
 
     @OneToMany(targetEntity = Answer.class, mappedBy = "id")
     private Collection<Answer> answers;
@@ -38,12 +42,12 @@ public class User {
         this.id = id;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Collection<Answer> getAnswers() {

@@ -7,12 +7,11 @@ import quizapi.modal.User;
 import quizapi.repository.UserRepository;
 
 @Service
-public class UserService implements ServiceInterface {
+public class UserService {
 
     @Autowired
     private UserRepository userRepository;
 
-    @Override
     public User findById(Long id) {
         User user = userRepository
                 .findById(id)
@@ -20,8 +19,16 @@ public class UserService implements ServiceInterface {
         return user;
     }
 
-    @Override
-    public void removeById(Long id) {
-        return;
+    public User findOrCreateByUsername(String username) {
+        User user;
+        if (userRepository.existsByUsername(username)) {
+            user = userRepository
+                    .findByUsername(username)
+                    .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+        } else {
+            user = userRepository.save(new User(username));
+        }
+        return user;
     }
+
 }
