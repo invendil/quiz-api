@@ -8,13 +8,16 @@ public class GameSessionPayload {
 
     private long answerId;
 
+    private int questionsCount;
+
     public GameSessionPayload() {
     }
 
-    public GameSessionPayload(String category, String username, int answerId) {
+    public GameSessionPayload(String category, String username, long answerId, int questionsCount) {
         this.category = category;
         this.username = username;
         this.answerId = answerId;
+        this.questionsCount = questionsCount;
     }
 
     public long getAnswerId() {
@@ -39,5 +42,13 @@ public class GameSessionPayload {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public int getQuestionsCount() {
+        return questionsCount;
+    }
+
+    public void setQuestionsCount(int questionsCount) {
+        this.questionsCount = questionsCount;
     }
 }

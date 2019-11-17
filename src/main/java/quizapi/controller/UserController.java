@@ -8,7 +8,7 @@ import quizapi.model.User;
 import quizapi.service.UserService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users/")
 public class UserController {
 
     @Autowired
@@ -17,7 +17,7 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @GetMapping("/user/{id}")
+    @GetMapping("{id}")
     public User getCurrentUser(@PathVariable long id) {
         User userSummary = userService.findById(id);
         return userSummary;

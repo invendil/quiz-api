@@ -11,6 +11,8 @@ import quizapi.repository.CategoryRepository;
 import quizapi.repository.GameSessionRepository;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -40,10 +42,11 @@ public class GameSessionService {
         GameSession gameSession = new GameSession(
                 0,
                 0,
+                // TODO change on db request
                 currentSessionCategory.getQuestions().size(),
                 currentSessionCategory,
                 currentSessionUser,
-                new ArrayList<Question>()
+                new HashSet<>()
         );
         gameSessionRepository.save(gameSession);
         return currentSessionCategory;
@@ -63,5 +66,13 @@ public class GameSessionService {
         LOGGER.debug("ERROR, ANSWER DON'T MATCH TO SESSION QUESTIONS!");
         //TODO Exception throw here
         return false;
+    }
+
+    public Iterable<Category> getCategories() {
+        return categoryRepository.findAll();
+    }
+
+    public Collection<String> getCategoriesNames() {
+        return categoryRepository.findCategoriesNames();
     }
 }

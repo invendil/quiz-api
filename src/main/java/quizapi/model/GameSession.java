@@ -34,24 +34,13 @@ public class GameSession {
     public GameSession() {
     }
 
-    public GameSession(Integer score, Integer questionsCountTotal, Integer questionsCountAnswered,
-                       Category category, User user, Collection<Question> questions) {
+    public GameSession(Integer score, Integer questionsCountAnswered, Integer questionsCountTotal,  Category category, User user, Set<SessionAnswer> sessionAnswers) {
         this.score = score;
         this.questionsCountTotal = questionsCountTotal;
         this.questionsCountAnswered = questionsCountAnswered;
         this.category = category;
         this.user = user;
-        this.questions = questions;
-    }
-
-    private Collection<Question> questions;
-
-    public Collection<Question> getQuestions() {
-        return questions;
-    }
-
-    public void setQuestions(Collection<Question> questions) {
-        this.questions = questions;
+        this.sessionAnswers = sessionAnswers;
     }
 
     public Long getId() {
@@ -100,5 +89,13 @@ public class GameSession {
 
     public Set<SessionAnswer> getSessionAnswers() {
         return sessionAnswers;
+    }
+
+    public void setSessionAnswers(Set<SessionAnswer> sessionAnswers) {
+        this.sessionAnswers = sessionAnswers;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 }
