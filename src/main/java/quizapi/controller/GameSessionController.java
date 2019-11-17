@@ -8,7 +8,10 @@ import quizapi.model.Category;
 import quizapi.model.Question;
 import quizapi.payload.GameSessionPayload;
 import quizapi.service.GameSessionService;
+import quizapi.service.InitService;
+import quizapi.service.QuestionService;
 
+import java.io.IOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,7 +21,8 @@ public class GameSessionController {
 
     @Autowired
     private GameSessionService gameSessionService;
-
+    @Autowired
+    private InitService initService;
 
     private static final Logger logger = LoggerFactory.getLogger(GameSessionController.class);
 
@@ -28,7 +32,8 @@ public class GameSessionController {
     }
 
     @GetMapping("categories")
-    public @ResponseBody Iterable<Category> getCategories() {
+    public @ResponseBody Iterable<Category> getCategories() throws IOException {
+        initService.initQuestions();
         return gameSessionService.getCategories();
     }
 

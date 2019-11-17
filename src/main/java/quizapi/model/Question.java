@@ -4,6 +4,8 @@ package quizapi.model;
 import javax.persistence.*;
 import java.util.Collection;
 
+import static javax.persistence.CascadeType.ALL;
+
 @Entity
 @Table(name = "questions")
 public class Question {
@@ -13,42 +15,30 @@ public class Question {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @Column(name = "title", nullable = false, unique = true)
-    private String title;
-
     @ManyToOne(targetEntity = Category.class, optional = false)
     private Category category;
 
     @Column(name = "description", nullable = false)
     private String description;
 
-    @OneToMany(targetEntity = Answer.class, mappedBy = "id")
+    @Column(name = "difficulty", nullable = false)
+    private String difficulty;
+
+    @OneToMany(cascade = ALL, targetEntity = Answer.class, mappedBy = "id")
     private Collection<Answer> answers;
 
     public Question() {
     }
 
-    public Question(String title, Category category, String description, Collection<Answer> answers) {
-        this.title = title;
+    public Question(Category category, String description, String difficulty, Collection<Answer> answers) {
         this.category = category;
         this.description = description;
+        this.difficulty = difficulty;
         this.answers = answers;
     }
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public Category getCategory() {
@@ -65,6 +55,14 @@ public class Question {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(String difficulty) {
+        this.difficulty = difficulty;
     }
 
     public Collection<Answer> getAnswers() {
