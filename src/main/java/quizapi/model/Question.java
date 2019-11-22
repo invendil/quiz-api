@@ -4,7 +4,7 @@ package quizapi.model;
 import javax.persistence.*;
 import java.util.Collection;
 
-import static javax.persistence.CascadeType.ALL;
+import static javax.persistence.CascadeType.*;
 
 @Entity
 @Table(name = "questions")
@@ -15,7 +15,8 @@ public class Question {
     @Column(name = "id", unique = true, nullable = false)
     private Long id;
 
-    @ManyToOne(targetEntity = Category.class, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
     @Column(name = "description", nullable = false)
@@ -24,7 +25,7 @@ public class Question {
     @Column(name = "difficulty", nullable = false)
     private String difficulty;
 
-    @OneToMany(cascade = ALL, targetEntity = Answer.class, mappedBy = "id")
+    @OneToMany(cascade = {PERSIST, REFRESH}, targetEntity = Answer.class, mappedBy = "question")
     private Collection<Answer> answers;
 
     public Question() {

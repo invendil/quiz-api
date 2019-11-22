@@ -22,10 +22,12 @@ public class GameSession {
     @Column(name = "questions_count_answered", nullable = false)
     private Integer questionsCountAnswered;
 
-    @ManyToOne(targetEntity = Category.class, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @ManyToOne(targetEntity = User.class, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToMany(cascade = {CascadeType.ALL}, targetEntity = SessionAnswer.class)

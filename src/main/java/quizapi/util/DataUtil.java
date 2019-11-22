@@ -6,12 +6,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import quizapi.model.Answer;
 import quizapi.model.Category;
 import quizapi.model.Question;
+import quizapi.payload.AnswerPayload;
+import quizapi.payload.CategoryPayload;
 import quizapi.payload.QuestionFromJson;
+import quizapi.payload.QuestionPayload;
 import quizapi.repository.CategoryRepository;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class DataUtil {
 
@@ -48,10 +52,30 @@ public class DataUtil {
         for(String answer: questionFromJson.incorrect_answers){
             answers.add(new Answer(false, answer, question));
         }
+        Collections.shuffle(answers);
         question.setAnswers(answers);
         question.setDifficulty(difficulties.get(random.nextInt(3)));
         question.setCategory(categoryMap.get(questionFromJson.category));
         question.setDescription(questionFromJson.question);
         return question;
+    }
+
+    public QuestionPayload mapModelToPayloadQuestion(Question question) {
+        List<AnswerPayload> answerPayloads = new ArrayList<>();
+        question.getAnswers().forEach(answer -> {
+            answerPayloads.add(new AnswerPayload(
+                    answer.getId(),
+                    answer.getDescription()
+            ));
+
+        });
+        QuestionPayload questionPayload = new QuestionPayload(
+                question.getId(),
+                new CategoryPayload(question.getCategory().getName()),
+                question.getDescription(),
+                question.getDifficulty(),
+                answerPayloads
+        );
+        return questionPayload;
     }
 }

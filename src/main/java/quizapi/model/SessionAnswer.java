@@ -15,19 +15,14 @@ public class SessionAnswer {
     @JoinColumn(name = "game_session_id", nullable = false)
     private GameSession gameSession;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "question_id", nullable = false)
-    private Question question;
-
     @ManyToOne(targetEntity = Answer.class)
     private Answer answer;
 
     public SessionAnswer() {
     }
 
-    public SessionAnswer(GameSession gameSession, Question question, Answer answer) {
+    public SessionAnswer(GameSession gameSession, Answer answer) {
         this.gameSession = gameSession;
-        this.question = question;
         this.answer = answer;
     }
 
@@ -39,20 +34,12 @@ public class SessionAnswer {
         return gameSession;
     }
 
-    public Question getQuestion() {
-        return question;
-    }
-
-    public Answer getAnswer() {
-        return answer;
-    }
-
     public void setGameSession(GameSession gameSession) {
         this.gameSession = gameSession;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public Answer getAnswer() {
+        return answer;
     }
 
     public void setAnswer(Answer answer) {

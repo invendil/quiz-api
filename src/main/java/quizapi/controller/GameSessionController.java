@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import quizapi.model.Category;
 import quizapi.model.Question;
+import quizapi.payload.CategoryPayload;
 import quizapi.payload.GameSessionPayload;
+import quizapi.payload.QuestionPayload;
 import quizapi.service.GameSessionService;
 import quizapi.service.InitService;
 import quizapi.service.QuestionService;
@@ -26,15 +28,19 @@ public class GameSessionController {
 
     private static final Logger logger = LoggerFactory.getLogger(GameSessionController.class);
 
-    @GetMapping("start")
-    public @ResponseBody Collection<Question> startGameSession(@RequestBody GameSessionPayload gameSessionPayload) {
-        return gameSessionService.startGame(gameSessionPayload).getQuestions();
+    @PostMapping("start")
+    public @ResponseBody Collection<QuestionPayload> startGameSession(@RequestBody GameSessionPayload gameSessionPayload) {
+        return gameSessionService.startGame(gameSessionPayload);
     }
 
     @GetMapping("categories")
-    public @ResponseBody Iterable<Category> getCategories() throws IOException {
-        initService.initQuestions();
-        return gameSessionService.getCategories();
+    public @ResponseBody Iterable<CategoryPayload> getCategories() {
+        return gameSessionService.getCategoriesPayload();
+    }
+
+    @GetMapping("ask")
+    public @ResponseBody Boolean getCategories(@RequestBody GameSessionPayload gameSessionPayload) {
+        return gameSessionService.isAnswerRight(gameSessionPayload);
     }
 
 }

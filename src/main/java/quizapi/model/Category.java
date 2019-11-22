@@ -3,6 +3,8 @@ package quizapi.model;
 import javax.persistence.*;
 import java.util.Collection;
 
+import static javax.persistence.CascadeType.*;
+
 @Entity
 @Table(name = "categories")
 public class Category {
@@ -14,10 +16,10 @@ public class Category {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(targetEntity = Question.class, mappedBy = "id")
+    @OneToMany(cascade = {PERSIST, REFRESH}, targetEntity = Question.class, mappedBy = "category")
     private Collection<Question> questions;
 
-    @OneToMany(targetEntity = Record.class, mappedBy = "id")
+    @OneToMany(cascade = {PERSIST, REFRESH}, targetEntity = Record.class, mappedBy = "category")
     private Collection<Record> records;
 
     public Category() {

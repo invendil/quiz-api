@@ -17,7 +17,8 @@ public class Answer {
     @Column(name = "description", nullable = false)
     private String description;
 
-    @ManyToOne(targetEntity = Question.class)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
     public Answer() {
