@@ -26,9 +26,13 @@ public class UserService {
                     .findByUsername(username)
                     .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
         } else {
-            user = userRepository.save(new User(username));
+            user = createByUsername(username);
         }
         return user;
+    }
+
+    public User createByUsername(String username) {
+        return userRepository.save(new User(username));
     }
 
     public User findByUsername(String username) {

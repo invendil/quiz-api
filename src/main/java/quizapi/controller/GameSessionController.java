@@ -18,7 +18,7 @@ import java.util.Collection;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/game_session/")
+@RequestMapping("/api/game_session")
 public class GameSessionController {
 
     @Autowired
@@ -28,17 +28,17 @@ public class GameSessionController {
 
     private static final Logger logger = LoggerFactory.getLogger(GameSessionController.class);
 
-    @PostMapping("start")
+    @PostMapping("/start")
     public @ResponseBody Collection<QuestionPayload> startGameSession(@RequestBody GameSessionPayload gameSessionPayload) {
         return gameSessionService.startGame(gameSessionPayload);
     }
 
-    @GetMapping("categories")
+    @GetMapping("/categories")
     public @ResponseBody Iterable<CategoryPayload> getCategories() {
         return gameSessionService.getCategoriesPayload();
     }
 
-    @PostMapping("ask")
+    @PostMapping("/ask")
     public @ResponseBody Boolean getCategories(@RequestBody GameSessionPayload gameSessionPayload) {
         return gameSessionService.isAnswerRight(gameSessionPayload);
     }
