@@ -38,7 +38,7 @@ public class GameSessionController {
         return gameSessionService.getCategoriesPayload();
     }
 
-    @GetMapping("ask")
+    @PostMapping("ask")
     public @ResponseBody Boolean getCategories(@RequestBody GameSessionPayload gameSessionPayload) {
         return gameSessionService.isAnswerRight(gameSessionPayload);
     }

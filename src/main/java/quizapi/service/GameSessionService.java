@@ -56,10 +56,11 @@ public class GameSessionService {
         gameSessionRepository.save(gameSession);
 
         List<QuestionPayload> questionPayloads = new ArrayList<>();
-        for(Question question: currentSessionCategory.getQuestions()){
+        for (Question question : currentSessionCategory.getQuestions()) {
             questionPayloads.add(dataUtil.mapModelToPayloadQuestion(question));
         }
-        return questionPayloads;
+        // TODO take questions count from client side
+        return questionPayloads.subList(0, 5);
     }
 
     public Boolean isAnswerRight(Long answerId) {
@@ -77,6 +78,7 @@ public class GameSessionService {
         Answer currentAnswer = answerRepository
                 .findById(gameSessionPayload.getAnswerId())
                 .orElseThrow(() -> new ResourceNotFoundException("GameSession", "answer", gameSessionPayload.getAnswerId()));
+        // update current session by getting answer
         updateGameSessin(currentGameSession, currentAnswer);
         return currentAnswer.getRight();
     }
@@ -89,18 +91,23 @@ public class GameSessionService {
         return categoryPayloads;
     }
 
-    private void updateGameSessin(GameSession currentGameSession, Answer currentAnswer){
-        int score = currentGameSession.getScore();
-        Set<SessionAnswer> sessionAnswers = currentGameSession.getSessionAnswers();
-        int currentAnsweredQuestionsCount = currentGameSession.getQuestionsCountAnswered();
-        sessionAnswers.add(new SessionAnswer(
-                currentGameSession,
-                currentAnswer
-        ));
-        currentGameSession.setQuestionsCountAnswered(currentAnsweredQuestionsCount++);
-        if (currentAnswer.getRight()){
-            currentGameSession.setScore(score++);
+    private void updateGameSessin(GameSession currentGameSession, Answer currentAnswer) {
+        // TODO take questions count from client side and change session handler
+        if (currentGameSession.getSessionAnswers().size() == 4) {
+            gameSessionRepository.delete(currentGameSession);
+        } else {
+            int score = currentGameSession.getScore();
+            Set<SessionAnswer> sessionAnswers = currentGameSession.getSessionAnswers();
+            int currentAnsweredQuestionsCount = currentGameSession.getQuestionsCountAnswered();
+            sessionAnswers.add(new SessionAnswer(
+                    currentGameSession,
+                    currentAnswer
+            ));
+            currentGameSession.setQuestionsCountAnswered(++currentAnsweredQuestionsCount);
+            if (currentAnswer.getRight()) {
+                currentGameSession.setScore(++score);
+            }
+            gameSessionRepository.save(currentGameSession);
         }
-        // todo finish me
     }
 }
