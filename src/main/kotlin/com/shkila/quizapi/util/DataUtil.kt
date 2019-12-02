@@ -5,10 +5,12 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.shkila.quizapi.model.Answer
 import com.shkila.quizapi.model.Category
 import com.shkila.quizapi.model.Question
+import com.shkila.quizapi.model.Record
 import com.shkila.quizapi.payload.AnswerPayload
 import com.shkila.quizapi.payload.CategoryPayload
 import com.shkila.quizapi.payload.QuestionFromJson
 import com.shkila.quizapi.payload.QuestionPayload
+import com.shkila.quizapi.payload.RecordPayload
 import java.io.File
 import java.io.IOException
 import java.util.ArrayList
@@ -21,6 +23,7 @@ var objectMapper = ObjectMapper()
 
 private val random = Random()
 
+private val fixReg = Regex("$.;")
 
 private val difficulties = Arrays.asList("easy", "medium", "hard")
 
@@ -50,7 +53,7 @@ fun QuestionFromJson.mapJsonToDataQuestion(): Question = run {
     val answers = mutableListOf(
             Answer(
                     right = true,
-                    description = this.correct_answer,
+                    description = this.correct_answer!!.replace(fixReg, ""),
                     question = question
             )
     )
@@ -58,7 +61,7 @@ fun QuestionFromJson.mapJsonToDataQuestion(): Question = run {
         answers.add(
                 Answer(
                         right = false,
-                        description = answer,
+                        description = answer.replace(fixReg, ""),
                         question = question
                 )
         )
@@ -66,14 +69,14 @@ fun QuestionFromJson.mapJsonToDataQuestion(): Question = run {
     answers.shuffle()
     question.apply {
         this.answers = answers
-        difficulty = difficulties[random.nextInt(3)]
+        difficulty = this@run.difficulty
         category = categoryMap[this@run.category]
         description = this@run.question
     }
     question
 }
 
-fun Question.mapModelToPayloadQuestion(): QuestionPayload =
+fun Question.mapToPayload(): QuestionPayload =
         QuestionPayload(
                 id = this.id,
                 category = CategoryPayload(this.category!!.name),
@@ -85,3 +88,10 @@ fun Question.mapModelToPayloadQuestion(): QuestionPayload =
         )
 
 
+fun Record.mapToPayload(): RecordPayload =
+        RecordPayload(
+                score = this.score,
+                questionCount = this.questionCount,
+                categoryName = this.category!!.name,
+                username = this.user!!.username
+        )

@@ -40,6 +40,6 @@ class InitService {
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(QuestionService::class.java)
-        private val categoryNames = Arrays.asList("History", "VideoGames")
+        private val categoryNames = listOf("History", "Video Games")
     }
 }

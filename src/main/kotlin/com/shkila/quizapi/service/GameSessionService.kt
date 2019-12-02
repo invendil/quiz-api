@@ -3,6 +3,7 @@ package com.shkila.quizapi.service
 import com.shkila.quizapi.exception.ResourceNotFoundException
 import com.shkila.quizapi.model.Answer
 import com.shkila.quizapi.model.GameSession
+import com.shkila.quizapi.model.Record
 import com.shkila.quizapi.model.SessionAnswer
 import com.shkila.quizapi.payload.CategoryPayload
 import com.shkila.quizapi.payload.GameSessionPayload
@@ -10,7 +11,8 @@ import com.shkila.quizapi.payload.QuestionPayload
 import com.shkila.quizapi.repository.AnswerRepository
 import com.shkila.quizapi.repository.CategoryRepository
 import com.shkila.quizapi.repository.GameSessionRepository
-import com.shkila.quizapi.util.mapModelToPayloadQuestion
+import com.shkila.quizapi.repository.RecordRepository
+import com.shkila.quizapi.util.mapToPayload
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -22,6 +24,8 @@ class GameSessionService {
     lateinit var gameSessionRepository: GameSessionRepository
     @Autowired
     lateinit var categoryRepository: CategoryRepository
+    @Autowired
+    lateinit var recordRepository: RecordRepository
     @Autowired
     lateinit var userService: UserService
     @Autowired
@@ -58,7 +62,7 @@ class GameSessionService {
         return currentSessionCategory.questions!!
                 .shuffled()
                 .subList(0, gameSession.questionsCountTotal!!)
-                .map { it.mapModelToPayloadQuestion() }
+                .map { it.mapToPayload() }
     }
 
     fun isAnswerRight(gameSessionPayload: GameSessionPayload): Boolean {
@@ -70,32 +74,63 @@ class GameSessionService {
                 .findById(gameSessionPayload.answerId)
                 .orElseThrow { ResourceNotFoundException("GameSession", "answer", gameSessionPayload.answerId) }
         // update current session by getting answer
-        updateGameSession(currentGameSession, currentAnswer)
+        currentGameSession.updateGameSession(currentAnswer)
         return currentAnswer.right!!
     }
 
-    private fun updateGameSession(currentGameSession: GameSession, currentAnswer: Answer) {
+    private fun GameSession.updateGameSession(currentAnswer: Answer) = run {
 
-        currentGameSession.sessionAnswers!!.add(
+        this.sessionAnswers!!.add(
                 SessionAnswer(
-                        gameSession = currentGameSession,
+                        gameSession = this,
                         answer = currentAnswer
                 )
         )
 
-        currentGameSession.questionsCountAnswered++
+        this.questionsCountAnswered++
 
         if (currentAnswer.right!!) {
-            currentGameSession.score++
+            this.score++
         }
 
         // todo implement record logic
-        if (currentGameSession.sessionAnswers!!.size == currentGameSession.questionsCountTotal)
-            gameSessionRepository.delete(currentGameSession)
-        else
-            gameSessionRepository.save(currentGameSession)
-
+        if (this.sessionAnswers!!.size == this.questionsCountTotal) {
+            gameSessionRepository.delete(this)
+            this.recordGameSession()
+        } else {
+            gameSessionRepository.save(this)
+        }
     }
+
+    private fun GameSession.recordGameSession() = also {session ->
+        val record = recordRepository
+                .findByUser(session.user!!)
+                .orElseGet { null }
+        if (record != null) {
+            if (session isBetterThan record) {
+                recordRepository.save(
+                        record.apply {
+                            score = session.score
+                            questionCount = session.questionsCountTotal
+                            category = session.category
+                            user = session.user
+                        }
+                )
+            }
+        } else {
+            recordRepository.save(
+                    Record (
+                        score = session.score,
+                        questionCount = session.questionsCountTotal,
+                        category = session.category,
+                        user = session.user
+                    )
+            )
+        }
+    }
+
+    private infix fun GameSession.isBetterThan(record: Record): Boolean =
+            ((this.score.toFloat() / this.questionsCountTotal!!) > (record.score!!.toFloat() / record.questionCount!!))
 
     companion object {
         private val LOGGER = LoggerFactory.getLogger(GameSessionService::class.java)

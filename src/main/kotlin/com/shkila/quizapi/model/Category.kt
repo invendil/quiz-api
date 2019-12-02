@@ -16,7 +16,7 @@ data class Category(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id", unique = true, nullable = false)
-        var id: Long? = null,
+        val id: Long? = null,
 
         @Column(name = "name", nullable = false)
         var name: String? = null,

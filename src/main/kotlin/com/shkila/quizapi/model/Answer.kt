@@ -16,7 +16,7 @@ data class Answer(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id", unique = true, nullable = false)
-        var id: Long? = null,
+        val id: Long? = null,
 
         @Column(name = "is_right", nullable = false)
         var right: Boolean? = null,

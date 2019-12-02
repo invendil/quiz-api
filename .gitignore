@@ -32,3 +32,6 @@ build/
 
 ### Maven ###
 .mvn
+
+### DB data ###
+.db

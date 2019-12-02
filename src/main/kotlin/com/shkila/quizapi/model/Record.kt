@@ -14,13 +14,13 @@ data class Record(
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "id", unique = true, nullable = false)
-        var id: Long? = null,
+        val id: Long? = null,
 
         @Column(name = "score", nullable = false)
         var score: Int? = null,
 
         @Column(name = "question_count", nullable = false)
-        private val questionCount: Int? = null,
+        var questionCount: Int? = null,
 
         @ManyToOne(targetEntity = Category::class)
         var category: Category? = null,
